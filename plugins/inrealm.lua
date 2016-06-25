@@ -722,15 +722,17 @@ function run(msg, matches)
 		user_info(user_id, cb_user_info, {receiver = receiver})
 	end
 
-	if not is_sudo(msg) then
-		if is_realm(msg) and is_admin1(msg) then
-			print("Admin detected")
-		else
-			return
-		end
+	if not is_sudo(msg) and not is_realm(msg) and is_admin1(msg) then
+		return
  	end
 
     if matches[1] == 'creategroup' and matches[2] then
+	if not is_momod(msg) then 
+		return 
+	end
+	if not is_sudo(msg) or is_admin1(msg) and is_realm(msg) then
+		return "You cant create groups!"
+	end
         group_name = matches[2]
         group_type = 'group'
         return create_group(msg)
@@ -747,9 +749,9 @@ function run(msg, matches)
     end]]
 
     if matches[1] == 'createrealm' and matches[2] then
-			if not is_sudo(msg) then
-				return "Sudo users only !"
-			end
+	if not is_sudo(msg) or not is_admin1(msg) and is_realm(msg) then
+		return  "You cant create groups!"
+	end
         group_name = matches[2]
         group_type = 'realm'
         return create_realm(msg)
@@ -942,9 +944,6 @@ function run(msg, matches)
 			end
 		end
 		if matches[1] == 'addadmin' then
-		    if not is_sudo(msg) then-- Sudo only
-				return
-			end
 			if string.match(matches[2], '^%d+$') then
 				local admin_id = matches[2]
 				print("user "..admin_id.." has been promoted as admin")
@@ -956,9 +955,6 @@ function run(msg, matches)
 			end
 		end
 		if matches[1] == 'removeadmin' then
-		    if not is_sudo(msg) then-- Sudo only
-				return
-			end
 			if string.match(matches[2], '^%d+$') then
 				local admin_id = matches[2]
 				print("user "..admin_id.." has been demoted")

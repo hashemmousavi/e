@@ -172,7 +172,9 @@ local support_id = msg.from.id
   end
   if matches[1]:lower() == 'ban' then-- /ban
     if type(msg.reply_id)~="nil" and is_momod(msg) then
+		print('ok1')
       if is_admin1(msg) then
+		print('ok2')
 		msgr = get_message(msg.reply_id,ban_by_reply_admins, false)
       else
         msgr = get_message(msg.reply_id,ban_by_reply, false)
@@ -191,10 +193,8 @@ local support_id = msg.from.id
         end
         local print_name = user_print_name(msg.from):gsub("‮", "")
 	    local name = print_name:gsub("_", "")
-		local receiver = get_receiver(msg)
         savelog(msg.to.id, name.." ["..msg.from.id.."] baned user ".. matches[2])
         ban_user(matches[2], msg.to.id)
-		send_large_msg(receiver, 'User ['..matches[2]..'] banned')
       else
 		local cbres_extra = {
 		chat_id = msg.to.id,
@@ -238,7 +238,7 @@ local support_id = msg.from.id
 if matches[1]:lower() == 'kick' then
     if type(msg.reply_id)~="nil" and is_momod(msg) then
       if is_admin1(msg) then
-        msgr = get_message(msg.reply_id,Kick_by_reply_admins, false)
+        local msgr = get_message(msg.reply_id,Kick_by_reply_admins, false)
       else
         msgr = get_message(msg.reply_id,Kick_by_reply, false)
       end
@@ -254,6 +254,7 @@ if matches[1]:lower() == 'kick' then
 		end
     local user_id = matches[2]
     local chat_id = msg.to.id
+    print("sexy")
 		local print_name = user_print_name(msg.from):gsub("‮", "")
 		local name = print_name:gsub("_", "")
 		savelog(msg.to.id, name.." ["..msg.from.id.."] kicked user ".. matches[2])

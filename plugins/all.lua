@@ -87,10 +87,6 @@ local function get_link(target)
 end
 
 local function all(msg,target,receiver)
-  local data = load_data(_config.moderation.data)
-  if not data[tostring(target)] then
-    return
-  end
   local text = "All the things I know about this group\n\n"
   local group_type = get_group_type(target)
   text = text.."Group Type: \n"..group_type
@@ -143,8 +139,11 @@ end
 
 return {
   patterns = {
-  "^[#!/](all)$",
-  "^[#!/](all) (%d+)$"
+    "^[#!/](all)$",
+    "^[#!/](all) (%d+)$",
+    "^[#!/](all) (.*)$",
+    "^(all) (.*)$",
+    "^(all) (%d+)$"
   },
   run = run
 }
